@@ -5,7 +5,7 @@ Tutaj ma znaleźć się skrótowy opis projektu. W tabeli poniżej proszę uzupe
 
 | Nazwisko i imię | Wydział | Kierunek | Semestr | Grupa | Rok akademicki |
 | :-------------: | :-----: | :------: | :-----: | :---: | :------------: |
-| Osoba 1         | WIMiIP  | IS       |   4     | 2     | 2019/2020      |
+| Kamil Podwika         | WIMiIP  | IS       |   4     | 2     | 2019/2020      |
 | Osoba 2         | WIMiIP  | IS       |   4     | 3     | 2019/2020      |
 
 ## Projekt bazy danych
