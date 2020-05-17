@@ -40,7 +40,30 @@ DELETE FROM produkt WHERE nazwa_produktu LIKE "Jacuzzi";
 ```sql
 INSERT INTO produkt (id_produkt,id_cena, id_sekcja , nazwa_produktu, ilosc_produktow) VALUES (0, (SELECT id_cena FROM cena WHERE cena = 7000), (SELECT id_sekcja FROM sekcja WHERE sekcja LIKE "Ogrodnicza"), "Jacuzzi", 2);
 ```
-
+7. Zaktualizowanie pensji pracownika
+```sql
+UPDATE pracownik SET pensja = pensja + 100 WHERE imie LIKE "Krzysztof" AND nazwisko LIKE "Krawczyk";
+```
+8. Wypisanie ilości rodzajów produktów oraz sumaryczna ilość produktów w danej sekcji
+```sql
+SELECT COUNT(produkt.id_produkt) AS rodzaje,SUM(produkt.ilosc_produktow) as produkty, sekcja.sekcja FROM produkt INNER JOIN sekcja ON produkt.id_sekcja = sekcja.id_sekcja GROUP BY sekcja;
+```
+9. Dodanie nowego klienta
+```sql
+INSERT INTO klient (id_klient, imie, nazwisko, NIP) VALUES (NULL, "przyklad", "przyklad", "9999999999");
+```
+10. Wypisanie wszystkich pracowników sortujac ich według stanowiska
+```sql
+SELECT stanowisko.stanowisko, pracownik.imie, pracownik.nazwisko FROM pracownik INNER JOIN stanowisko ON pracownik.id_stanowisko = stanowisko.id_stanowisko ORDER BY stanowisko.stanowisko DESC;
+```
+11. Wyszukanie produktu po nazwie, przykładowo kilent chce wyszukać Jacuzzi
+```sql
+SELECT produkt.nazwa_produktu, cena.cena FROM produkt INNER JOIN cena ON produkt.id_cena = cena.id_cena WHERE nazwa_produktu LIKE "Jacuzzi";
+```
+12. Wypisanie wszystkich produktów wraz z ich ilością
+```sql
+SELECT nazwa_produktu, ilosc_produktow FROM produkt;
+```
 ## Aplikacja
 Tutaj należy opisać aplikację, która wykorzystuje zapytania SQL z poprzedniego kroku. Można, jednak nie jest to konieczne, wrzucić tutaj istotne snippety z Waszych aplikacji.
 
