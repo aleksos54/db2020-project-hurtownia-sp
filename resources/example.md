@@ -18,6 +18,28 @@ Tutaj należy wylistować wszystkie funkcjonalności, wraz z odpowiednimi zapyta
  ```sql
     SELECT produkt.nazwa_produktu, cena.cena FROM produkt INNER JOIN cena ON cena.id_cena = produkt.id_cena ORDER BY cena.cena DESC;
 ```
+2. Dodanie nowo zatrudnionego pracownika, przykładowo:
+```sql
+INSERT INTO pracownik (id_pracownik, imie, nazwisko, pensja, id_stanowisko) VALUES (NULL, "przyklad_imie", "przyklad_nazwisko", 9999, (SELECT id_stanowisko FROM stanowisko where id_stanowisko=2));
+```
+3. Wystawienie faktury, w aplikacji można w pętli ustawić wartość faktury z kilku zamówień
+```sql
+INSERT INTO faktura (id_faktura, wartosc, id_klient) VALUES (NULL, NULL, 1);
+INSERT INTO zamowienie (id_zamowienie,id_produkt, data_zamowienia, id_pracownik, ilosc, id_faktura) VALUES (NULL, (SELECT id_produkt FROM produkt WHERE id_produkt = 5), "2020-05-17", (SELECT id_pracownik FROM pracownik WHERE id_pracownik= 4), 2, (SELECT id_faktura FROM faktura WHERE id_faktura = 3));
+UPDATE faktura SET faktura.wartosc = (SELECT ilosc FROM zamowienie WHERE id_zamowienie = 2) * (SELECT cena FROM cena INNER JOIN produkt ON cena.id_cena = produkt.id_cena WHERE produkt.id_produkt = 5) WHERE id_faktura = 3;
+```
+4. Zaktualizowanie ceny, przykładowo:
+```sql
+UPDATE cena SET cena.cena = cena.cena*0.5 WHERE (SELECT id_cena FROM produkt WHERE nazwa_produktu LIKE "Jacuzzi");
+```
+5. Wycofanie produktu ze sprzedaży, przykładowo:
+```sql
+DELETE FROM produkt WHERE nazwa_produktu LIKE "Jacuzzi";
+```
+6. Dodanie produktu do sprzedaży, przykładowo:
+```sql
+INSERT INTO produkt (id_produkt,id_cena, id_sekcja , nazwa_produktu, ilosc_produktow) VALUES (0, (SELECT id_cena FROM cena WHERE cena = 7000), (SELECT id_sekcja FROM sekcja WHERE sekcja LIKE "Ogrodnicza"), "Jacuzzi", 2);
+```
 
 ## Aplikacja
 Tutaj należy opisać aplikację, która wykorzystuje zapytania SQL z poprzedniego kroku. Można, jednak nie jest to konieczne, wrzucić tutaj istotne snippety z Waszych aplikacji.
