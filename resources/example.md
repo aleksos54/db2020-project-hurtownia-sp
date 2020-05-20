@@ -30,7 +30,7 @@ UPDATE faktura SET faktura.wartosc = (SELECT ilosc FROM zamowienie WHERE id_zamo
 ```
 4. Zaktualizowanie ceny, przykładowo:
 ```sql
-UPDATE cena SET cena.cena = cena.cena*0.5 WHERE (SELECT id_cena FROM produkt WHERE nazwa_produktu LIKE "Jacuzzi");
+UPDATE cena SET cena.cena = cena.cena*2 WHERE id_cena = (SELECT id_cena FROM produkt WHERE nazwa_produktu LIKE "Jacuzzi");
 ```
 5. Wycofanie produktu ze sprzedaży, przykładowo:
 ```sql
