@@ -18,9 +18,8 @@ def wypisanie_produktow():
 
     connection.close()
 
-
-# 4 ZAKTUALIZOWANIE CENY
-def aktualizacja_ceny(nazwa):
+#2 DODANIE PRACOWNIKA
+def dodanie_pracownika(imie, nazwisko, pensja, stanowisko, login, haslo):
     connection = pymysql.Connect(
         host='localhost',
         user="root",
@@ -30,9 +29,26 @@ def aktualizacja_ceny(nazwa):
 
     cur = connection.cursor()
 
-    sql = "UPDATE cena SET cena.cena = cena.cena* 0.5 WHERE id_cena = (SELECT id_cena FROM produkt WHERE nazwa_produktu LIKE %s);"
+    sql = "INSERT INTO pracownik (id_pracownik, imie, nazwisko, pensja, id_stanowisko, p_login, p_haslo) VALUES (NULL, %s, %s, %s, (SELECT id_stanowisko FROM stanowisko where stanowisko LIKE %s), %s, %s);"
 
-    cur.execute(sql, nazwa)
+    cur.execute(sql, (imie, nazwisko, pensja, stanowisko, login, haslo))
+    connection.commit()
+    connection.close()
+
+# 4 ZAKTUALIZOWANIE CENY
+def aktualizacja_ceny(zmiana ,nazwa):
+    connection = pymysql.Connect(
+        host='localhost',
+        user="root",
+        password="",
+        db="hurtownia2",
+    )
+
+    cur = connection.cursor()
+
+    sql = "UPDATE cena SET cena.cena = cena.cena + %s WHERE id_cena = (SELECT id_cena FROM produkt WHERE nazwa_produktu LIKE %s);"
+
+    cur.execute(sql, (zmiana, nazwa))
     connection.commit()
     connection.close()
 
@@ -50,6 +66,22 @@ def usuniecie_produktu(nazwa):
     sql = "DELETE FROM produkt WHERE nazwa_produktu LIKE %s;"
 
     cur.execute(sql, nazwa)
+    connection.commit()
+    connection.close()
+
+#6 DODANIE PRODUKTU DO SPRZEDAŻY
+def dodanie_produktu(sekcja, nazwa):
+    connection = pymysql.Connect(
+        host='localhost',
+        user="root",
+        password="",
+        db="hurtownia2",
+    )
+    cur = connection.cursor()
+
+    sql="INSERT INTO produkt (id_produkt,id_cena, id_sekcja , nazwa_produktu, ilosc_produktow) VALUES (0, (SELECT id_cena FROM cena WHERE cena = 7000), (SELECT id_sekcja FROM sekcja WHERE sekcja LIKE %s), %s, 2);"
+
+    cur.execute(sql ,sekcja , nazwa)
     connection.commit()
     connection.close()
 
