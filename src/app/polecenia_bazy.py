@@ -85,6 +85,41 @@ def dodanie_produktu(sekcja, nazwa):
     connection.commit()
     connection.close()
 
+#7 ZAKTUALIZOWANIE PENSJI PRACOWNIKA
+def aktualizacja_pensji(zmiana ,imie, nazwisko):
+    connection = pymysql.Connect(
+        host='localhost',
+        user="root",
+        password="",
+        db="hurtownia2",
+    )
+
+    cur = connection.cursor()
+
+    sql = "UPDATE pracownik SET pensja = pensja + %s WHERE imie LIKE %s AND nazwisko LIKE %s"
+
+
+    cur.execute(sql, (zmiana, imie, nazwisko))
+    connection.commit()
+    connection.close()
+
+#8 WYPISANIE ILOSCI RODZAJOW PRODUKTOW, ORAZ SUMARYCZNA ILOSC PRODUKTOW W SEKCJI
+def zliczenie_sekcjami():
+    connection = pymysql.Connect(
+        host='localhost',
+        user="root",
+        password="",
+        db="hurtownia2",
+    )
+    cur = connection.cursor()
+
+    cur.execute("SELECT sekcja.sekcja, COUNT(produkt.id_produkt) AS rodzaje,SUM(produkt.ilosc_produktow) as produkty FROM produkt INNER JOIN sekcja ON produkt.id_sekcja = sekcja.id_sekcja GROUP BY sekcja;")
+
+    for row in cur.fetchall():
+        print("Sekcja:", row[0], "| rodzaje produktów: ", row[1],"|", "ilość produktów w danej sekcji:",row[2])
+
+    connection.close()
+    
 #10 WYPISANIE PRACOWNIKOW
 def wypisanie_pracownikow():
     connection = pymysql.connect(
@@ -102,3 +137,4 @@ def wypisanie_pracownikow():
         i += 1
 
     connection.close()
+
