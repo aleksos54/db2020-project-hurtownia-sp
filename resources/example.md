@@ -11,6 +11,7 @@ Tutaj ma znaleźć się skrótowy opis projektu. W tabeli poniżej proszę uzupe
 ## Projekt bazy danych
 
 Tutaj ma znaleźć się opis projektu bazy danych. Na wstępie proszę zagnieździć obraz schematu w formie wektorowej, najlepiej plik SVG. Dodatkowo, w tej sekcji należy zawrzeć kilka przykładowych zapytań tworzących (lub w razie konieczności, modyfikujących) tabelę, tj. grupa DDL.
+![diagram-erd](projekt.svg)
 
 ## Implementacja zapytań SQL
 Tutaj należy wylistować wszystkie funkcjonalności, wraz z odpowiednimi zapytaniami SQL. W tej sekcji należy zawrzeć wyłącznie zapytania z grupy DML oraz DQL.
