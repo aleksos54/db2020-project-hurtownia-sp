@@ -26,8 +26,9 @@ INSERT INTO pracownik (id_pracownik, imie, nazwisko, pensja, id_stanowisko) VALU
 3. Wystawienie faktury, w aplikacji można w pętli ustawić wartość faktury z kilku zamówień
 ```sql
 INSERT INTO faktura (id_faktura, wartosc, id_klient) VALUES (NULL, NULL, 1);
-INSERT INTO zamowienie (id_zamowienie,id_produkt, data_zamowienia, id_pracownik, ilosc, id_faktura) VALUES (NULL, (SELECT id_produkt FROM produkt WHERE id_produkt = 5), "2020-05-17", (SELECT id_pracownik FROM pracownik WHERE id_pracownik= 4), 2, (SELECT id_faktura FROM faktura WHERE id_faktura = 3));
-UPDATE faktura SET faktura.wartosc = (SELECT ilosc FROM zamowienie WHERE id_zamowienie = 2) * (SELECT cena FROM cena INNER JOIN produkt ON cena.id_cena = produkt.id_cena WHERE produkt.id_produkt = 5) WHERE id_faktura = 3;
+SELECT MAX(id_faktura) FROM faktura;
+UPDATE produkt SET produkt.ilosc_produktow = produkt.ilosc_produktow - 4 WHERE id_produkt = (SELECT id_produkt FROM produkt WHERE nazwa_produktu LIKE "dluigopis");
+UPDATE faktura SET faktura.wartosc = (SELECT ilosc FROM zamowienie WHERE id_zamowienie = (SELECT MAX(id_zamowienie) FROM zamowienie)) * (SELECT cena FROM cena INNER JOIN produkt ON cena.id_cena = produkt.id_cena WHERE produkt.nazwa_produktu LIKE "dlugopis") WHERE id_faktura = (SELECT MAX(id_faktura) FROM faktura);
 ```
 4. Zaktualizowanie ceny, przykładowo:
 ```sql
@@ -65,6 +66,20 @@ SELECT produkt.nazwa_produktu, cena.cena FROM produkt INNER JOIN cena ON produkt
 ```sql
 SELECT nazwa_produktu, ilosc_produktow FROM produkt;
 ```
+13. Aktualizacja ilości produktów
+```sql
+UPDATE produkt SET produkt.ilosc_produktow = produkt.ilosc_produktow + %s WHERE id_produkt = (SELECT id_produkt FROM produkt WHERE nazwa_produktu LIKE Jacuzzi);
+```
+14. Złożenie zamówienia
+```sql
+INSERT INTO zamowienie (id_zamowienie,id_produkt, data_zamowienia, id_pracownik, ilosc, id_faktura) VALUES (NULL, (SELECT id_produkt FROM produkt WHERE nazwa_produktu LIKE Jacuzzi), "2020-05-27", 11, 1, NULL);
+UPDATE produkt SET produkt.ilosc_produktow = produkt.ilosc_produktow - 1 WHERE id_produkt = (SELECT id_produkt FROM produkt WHERE nazwa_produktu LIKE Jacuzzi);
+```
+15. Przydzielenie zadań
+```sql
+UPDATE zamowienie SET id_pracownik = (SELECT id_pracownik FROM pracownik WHERE imie LIKE Jacek AND nazwisko LIKE Placek) WHERE id_zamowienie = 1;
+```
+
 ## Aplikacja
 Tutaj należy opisać aplikację, która wykorzystuje zapytania SQL z poprzedniego kroku. Można, jednak nie jest to konieczne, wrzucić tutaj istotne snippety z Waszych aplikacji.
 
