@@ -36,6 +36,7 @@ def p_logowanie(login, haslo):
         print("logowanie pomyslne")
     else:
         print("logowanie nie udało się")
+
     connection.close()
 
 
@@ -97,9 +98,7 @@ def faktura(klogin , nazwa, data, plogin, ilosc):
         pomoc = row[0]
 
 
-    sql2 = "INSERT INTO zamowienie (id_zamowienie,id_produkt, data_zamowienia, id_pracownik, ilosc, id_faktura) VALUES (NULL, (SELECT id_produkt FROM produkt WHERE nazwa_produktu LIKE %s), %s, (SELECT id_pracownik FROM pracownik WHERE p_login LIKE %s), %s, (SELECT id_faktura FROM faktura WHERE id_faktura = %s));"
-    cur.execute(sql2, (nazwa, data, plogin, ilosc, pomoc))
-    connection.commit()
+
     pomoc2 = "UPDATE produkt SET produkt.ilosc_produktow = produkt.ilosc_produktow - %s WHERE id_produkt = (SELECT id_produkt FROM produkt WHERE nazwa_produktu LIKE %s);"
     cur.execute(pomoc2,(ilosc, nazwa))
     connection.commit()
@@ -285,3 +284,53 @@ def aktualizacja_ilosc(zmiana, nazwa):
     cur.execute(sql, (zmiana, nazwa))
     connection.commit()
     connection.close()
+
+#14 Złożenie zamówienia
+def zamowienie(nazwa, data, ilosc):
+    connection = pymysql.Connect(
+        host='localhost',
+        user="root",
+        password="",
+        db="hurtownia2",
+    )
+
+    cur = connection.cursor()
+    sql = "INSERT INTO zamowienie (id_zamowienie,id_produkt, data_zamowienia, id_pracownik, ilosc, id_faktura) VALUES (NULL, (SELECT id_produkt FROM produkt WHERE nazwa_produktu LIKE %s), %s, 11, %s, NULL);"
+    cur.execute(sql, (nazwa, data, ilosc))
+    connection.commit()
+    pomoc2 = "UPDATE produkt SET produkt.ilosc_produktow = produkt.ilosc_produktow - %s WHERE id_produkt = (SELECT id_produkt FROM produkt WHERE nazwa_produktu LIKE %s);"
+    cur.execute(pomoc2, (ilosc, nazwa))
+    connection.commit()
+    connection.close()
+
+#15 Przydzielenie zadań
+def zadanie(imie, nazwisko, numer):
+    connection = pymysql.Connect(
+        host='localhost',
+        user="root",
+        password="",
+        db="hurtownia2",
+    )
+
+    cur = connection.cursor()
+    sql = "UPDATE zamowienie SET id_pracownik = (SELECT id_pracownik FROM pracownik WHERE imie LIKE %s AND nazwisko LIKE %s) WHERE id_zamowienie = %s;"
+    cur.execute(sql,(imie, nazwisko, numer))
+    connection.commit()
+    connection.close()
+
+#16 Wypisanie zamówień
+def zamowienie():
+    connection = pymysql.Connect(
+        host='localhost',
+        user="root",
+        password="",
+        db="hurtownia2",
+    )
+
+    cur = connection.cursor()
+    cur.execute("SELECT zamowienie.id_zamowienie, produkt.nazwa_produktu, zamowienie.data_zamowienia, pracownik.imie, pracownik.nazwisko, zamowienie.ilosc FROM zamowienie INNER JOIN produkt ON zamowienie.id_produkt = produkt.id_produkt INNER JOIN pracownik ON zamowienie.id_pracownik = pracownik.id_pracownik;")
+    for row in cur.fetchall():
+        print("Numer zamówienia: ", row[0], "|", row[1], "|", row[2], "|", row[3], "|", row[4], "| Ilość:", row[5])
+    connection.close()
+
+zamowienie()
