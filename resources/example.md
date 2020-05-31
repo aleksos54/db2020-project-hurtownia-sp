@@ -13,6 +13,45 @@ Tutaj ma znaleźć się skrótowy opis projektu. W tabeli poniżej proszę uzupe
 Tutaj ma znaleźć się opis projektu bazy danych. Na wstępie proszę zagnieździć obraz schematu w formie wektorowej, najlepiej plik SVG. Dodatkowo, w tej sekcji należy zawrzeć kilka przykładowych zapytań tworzących (lub w razie konieczności, modyfikujących) tabelę, tj. grupa DDL.
 ![diagram-erd](projekt.svg)
 
+Przykładowe zapytania z grupy DDL:
+Utworzenie tabeli cena
+```sql
+CREATE TABLE cena(
+    id_cena int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    cena double
+    );
+```
+Utworzenie tabeli zamówienie
+```sql
+CREATE TABLE zamowienie(
+    id_zamowienie int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    id_produkt int,
+    data_zamowienia date,
+    id_pracownik int,
+    ilosc int,
+    id_faktura int
+    );
+```
+Utworzenie tabeli klient
+```sql
+CREATE TABLE klient(
+    id_klient int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    imie varchar(50),
+    nazwisko varchar(50),
+    NIP varchar(10),
+    k_login varchar(50),
+    k_haslo varchar (50)
+    );
+```
+
+Przykładowe zapytania modyfikujące strukturę tabelii
+```sql
+ALTER TABLE zamowienie ADD COLUMN klogin varchar(50);
+```
+```sql
+ALTER TABLE faktura ADD FOREIGN KEY (id_klient) REFERENCES klient (id_klient);
+```
+
 ## Implementacja zapytań SQL
 Tutaj należy wylistować wszystkie funkcjonalności, wraz z odpowiednimi zapytaniami SQL. W tej sekcji należy zawrzeć wyłącznie zapytania z grupy DML oraz DQL.
 1. Wypisanie wszystkich produktów i posortowanie ich względem ceny malejąco
