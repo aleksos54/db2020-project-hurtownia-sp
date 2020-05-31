@@ -1,4 +1,5 @@
-from test import *
+from polecenia_bazy import *
+from klient import *
 
 
 def interfejs_logowanie_rejestracja():
@@ -16,11 +17,14 @@ def interfejs_logowanie_rejestracja():
         haslo = input("Podaj haslo: ")
         rejestracja(imie, nazwisko, NIP, login, haslo)
         print("REJESTRACJA POPRAWNA")
+        klient()
     elif opcja == 2:
         print("Wybrano opcje ZALOGUJ")
         login = input("Podaj login: ")
         haslo = input("Podaj haslo: ")
-        k_logowanie(login, haslo)
+        # if k_logowanie(login, haslo) == 1:
+        k_logowanie(login,haslo)
+        klient()
     else:
         print("Wybrano nieprawidłową opcje!!!")
 
