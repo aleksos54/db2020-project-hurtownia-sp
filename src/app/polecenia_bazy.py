@@ -1,5 +1,4 @@
 import pymysql
-from pracownik import *
 
 def k_logowanie(login, haslo):
     connection = pymysql.connect(
@@ -37,6 +36,7 @@ def p_logowanie(login, haslo):
         print("logowanie pomyslne")
     else:
         print("logowanie nie udało się")
+
     connection.close()
 
 
@@ -77,7 +77,7 @@ def dodanie_pracownika(imie, nazwisko, pensja, stanowisko, login, haslo):
     connection.close()
 
 #3 WYSTAWIENIE FAKTURY
-def faktura(klogin , nazwa, data, plogin, ilosc):
+def faktura(klogin):
     connection = pymysql.Connect(
         host='localhost',
         user="root",
@@ -94,11 +94,34 @@ def faktura(klogin , nazwa, data, plogin, ilosc):
     pomoc = "SELECT MAX(id_faktura) FROM faktura;"
     cur.execute(pomoc)
 
-    for row in cur.fetchall():
-        pomoc = row[0]
 
-    sql3 = "UPDATE faktura SET faktura.wartosc = (SELECT ilosc FROM zamowienie WHERE id_zamowienie = (SELECT MAX(id_zamowienie) FROM zamowienie)) * (SELECT cena FROM cena INNER JOIN produkt ON cena.id_cena = produkt.id_cena WHERE produkt.nazwa_produktu LIKE %s) WHERE id_faktura = (SELECT MAX(id_faktura) FROM faktura);"
-    cur.execute(sql3, nazwa)
+    sql2 = "UPDATE zamowienie SET id_faktura = (SELECT MAX(id_faktura) FROM faktura) WHERE id_faktura IS NULL AND klogin LIKE %s;"
+    cur.execute(sql2, klogin)
+    connection.commit()
+
+    wartosc = 0
+
+    pomoc2 = "SELECT MIN(id_zamowienie), MAX(id_zamowienie) FROM zamowienie WHERE klogin = %s;"
+    cur.execute(pomoc2, klogin)
+    for row in cur.fetchall():
+        min = row[0]
+        max = row[1]
+
+    for i in range(min, max+1, 1):
+        cena = "SELECT cena from cena where id_cena = (SELECT id_cena FROM produkt WHERE id_produkt = (SELECT id_produkt FROM zamowienie WHERE id_zamowienie = %s) );"
+        cur.execute(cena, i)
+        for row in cur.fetchall():
+            temp1 = row[0]
+        ilosc = "SELECT ilosc FROM zamowienie WHERE id_zamowienie = %s;"
+        cur.execute(ilosc, i)
+        for row in cur.fetchall():
+            temp2 = row[0]
+        wynik = temp1*temp2
+        wartosc += wynik
+
+    sql3 = "UPDATE faktura SET wartosc = %s WHERE id_faktura = (SELECT MAX(id_faktura) FROM faktura);"
+
+    cur.execute(sql3, wartosc)
     connection.commit()
 
     connection.close()
@@ -279,21 +302,88 @@ def aktualizacja_ilosc(zmiana, nazwa):
     connection.commit()
     connection.close()
 
-#14 ZŁOŻENIE ZAMÓWIENIA
-def zamowienie(nazwa, data,ilosc):
-    connection = pymysql.connect(
+#14 Złożenie zamówienia
+def zamowienie(nazwa, data, ilosc, login):
+    connection = pymysql.Connect(
         host='localhost',
         user="root",
         password="",
         db="hurtownia2",
     )
+
     cur = connection.cursor()
-    sql = "INSERT INTO zamowienie (id_zamowienie,id_produkt, data_zamowienia, id_pracownik, ilosc, id_faktura) VALUES (NULL, (SELECT id_produkt FROM produkt WHERE nazwa_produktu LIKE %s), %s, 11, %s, NULL);"
-    cur.execute(sql, (nazwa, data, ilosc))
+    sql = "INSERT INTO zamowienie (id_zamowienie,id_produkt, data_zamowienia, id_pracownik, ilosc, id_faktura, klogin) VALUES (NULL, (SELECT id_produkt FROM produkt WHERE nazwa_produktu LIKE %s), %s, 11, %s, NULL, %s);"
+    cur.execute(sql, (nazwa, data, ilosc, login))
     connection.commit()
     pomoc2 = "UPDATE produkt SET produkt.ilosc_produktow = produkt.ilosc_produktow - %s WHERE id_produkt = (SELECT id_produkt FROM produkt WHERE nazwa_produktu LIKE %s);"
     cur.execute(pomoc2, (ilosc, nazwa))
     connection.commit()
     connection.close()
 
+#15 Przydzielenie zadań
+def zadanie(imie, nazwisko, numer):
+    connection = pymysql.Connect(
+        host='localhost',
+        user="root",
+        password="",
+        db="hurtownia2",
+    )
+
+    cur = connection.cursor()
+    sql = "UPDATE zamowienie SET id_pracownik = (SELECT id_pracownik FROM pracownik WHERE imie LIKE %s AND nazwisko LIKE %s) WHERE id_zamowienie = %s;"
+    cur.execute(sql,(imie, nazwisko, numer))
+    connection.commit()
+    connection.close()
+
+#16 Wypisanie zamówień
+def zamowienie_2():
+    connection = pymysql.Connect(
+        host='localhost',
+        user="root",
+        password="",
+        db="hurtownia2",
+    )
+
+    cur = connection.cursor()
+    cur.execute("SELECT zamowienie.id_zamowienie, produkt.nazwa_produktu, zamowienie.data_zamowienia, pracownik.imie, pracownik.nazwisko, zamowienie.ilosc FROM zamowienie INNER JOIN produkt ON zamowienie.id_produkt = produkt.id_produkt INNER JOIN pracownik ON zamowienie.id_pracownik = pracownik.id_pracownik;")
+    for row in cur.fetchall():
+        print("Numer zamówienia: ", row[0], "|", row[1], "|", row[2], "|", row[3], "|", row[4], "| Ilość:", row[5])
+    connection.close()
+
+#17 Wypisanie faktur
+def wypisanie_faktur(login):
+    connection = pymysql.Connect(
+        host='localhost',
+        user="root",
+        password="",
+        db="hurtownia2",
+    )
+
+    cur = connection.cursor()
+    sql = "SELECT id_faktura, wartosc FROM faktura WHERE id_klient = (SELECT id_klient FROM zamowienie WHERE klogin like %s LIMIT 1);"
+    cur.execute(sql, login)
+    for row in cur.fetchall():
+        print("Faktura numer: ", row[0], "| Wartość", row[1])
+    connection.close()
+
+
+
+def szczegoly(numer):
+        connection = pymysql.Connect(
+            host='localhost',
+            user="root",
+            password="",
+            db="hurtownia2",
+        )
+
+        cur = connection.cursor()
+        sql = "SELECT produkt.nazwa_produktu, zamowienie.ilosc, cena.cena FROM zamowienie INNER JOIN produkt ON zamowienie.id_produkt = produkt.id_produkt INNER JOIN cena ON produkt.id_cena = cena.id_cena WHERE zamowienie.id_faktura = %s;"
+        cur.execute(sql, numer)
+        for row in cur.fetchall():
+            print(row[0], " | ", row[1], "*", row[2])
+        sql2 = "SELECT wartosc FROM faktura WHERE id_faktura = %s "
+        cur.execute(sql2, numer)
+        for row in cur.fetchall():
+            print("Wartość całkowita: ", row[0])
+        connection.close()
 
