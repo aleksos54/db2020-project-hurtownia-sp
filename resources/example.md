@@ -130,7 +130,7 @@ UPDATE produkt SET produkt.ilosc_produktow = produkt.ilosc_produktow - 1 WHERE i
 15. Przydzielenie zadań
 ```sql
 UPDATE zamowienie SET id_pracownik = (SELECT id_pracownik FROM pracownik WHERE imie LIKE Jacek AND nazwisko LIKE Placek) WHERE id_zamowienie = 1;
-
+```
 
 16. Wyświetlenie zamówień
 ```sql
