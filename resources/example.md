@@ -134,7 +134,7 @@ UPDATE zamowienie SET id_pracownik = (SELECT id_pracownik FROM pracownik WHERE i
 
 16. Wyświetlenie zamówień
 ```sql
-SELECT zamowienie.id_zamowienie, produkt.nazwa_produktu, zamowienie.data_zamowienia, pracownik.imie, pracownik.nazwisko, zamowienie.ilosc FROM zamowienie INNER JOIN produkt ON zamowienie.id_produkt = produkt.id_produkt INNER JOIN pracownik ON zamowienie.id_pracownik = pracownik.id_pracownik
+SELECT zamowienie.id_zamowienie, produkt.nazwa_produktu, zamowienie.data_zamowienia, pracownik.imie, pracownik.nazwisko, zamowienie.ilosc FROM zamowienie INNER JOIN produkt ON zamowienie.id_produkt = produkt.id_produkt INNER JOIN pracownik ON zamowienie.id_pracownik = pracownik.id_pracownik;
 ```
 
 17. Wypisanie faktury - klient chce obejrzeć wszystkie swoje faktury, wyświetlają mu się one w wersji skróconej. Jeśli chce zobaczyć szczegóły jednej z nich musi wprowadzić jej numer id.
