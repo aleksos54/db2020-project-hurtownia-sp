@@ -187,6 +187,10 @@ WHERE zamowienie.id_faktura = 4;
 
 SELECT wartosc FROM faktura WHERE id_faktura = 4; 
 ```
+18. Wypisanie wszystkich faktur dla kasjera.
+```sql
+SELECT faktura.id_faktura, faktura.wartosc, klient.k_login FROM faktura INNER JOIN klient ON klient.id_klient = faktura.id_faktura;
+```
 
 ## Aplikacja
 Aplikacja została napisana w języku Python. Połączenie z bazą danych zrealizowano poprzez:
