@@ -366,8 +366,6 @@ def wypisanie_faktur(login):
         print("Faktura numer: ", row[0], "| Wartość", row[1])
     connection.close()
 
-
-
 def szczegoly(numer):
         connection = pymysql.Connect(
             host='localhost',

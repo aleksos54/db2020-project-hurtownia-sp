@@ -5,7 +5,6 @@ def interfejs_pracownik():
     print("ZALOGUJ SIE")
     login = input("LOGIN: ")
     haslo = getpass.getpass("Podaj haslo: ")
-
     p_logowanie(login,haslo)
     print("Witamy")
     pracownik(login)
@@ -29,7 +28,7 @@ def pracownik(login):
     connection.close()
 
     if(stanowisko == "Prezes"):
-        print("Dostępne opcje: ")
+        print("\nDostępne opcje: ")
         print("1. Dodanie pracownika ")
         print("2. Aktualizacja ceny ")
         print("3. Aktualizacja pensji ")
@@ -47,7 +46,6 @@ def pracownik(login):
             phaslo = input("Prosze wprowadzić haslo pracownika: ")
             dodanie_pracownika(imie, nazwisko, pensja, stanowisko, plogin, phaslo)
             print("Dziękujemy pracownik zarejestrowany poprawnie")
-
             return pracownik(login)
         elif(opcja == 2):
             nazwa = input("Proszę wprowadzić nazwe produktu: ")
@@ -85,7 +83,7 @@ def pracownik(login):
             print("BŁĘDNY WYÓR")
             return pracownik(login)
     elif(stanowisko == "Kierownik"):
-        print("Dostępne opcje: ")
+        print("\nDostępne opcje: ")
         print("1. Sprawdzenie produktu")
         print("2. Aktualizacja magazynu")
         print("3. Dodanie produktów")
@@ -133,7 +131,7 @@ def pracownik(login):
             print("BŁĘDNY WYBÓR")
             return pracownik(login)
     elif(stanowisko == "Magazynier"):
-        print("Dostępne opcje: ")
+        print("\nDostępne opcje: ")
         print("1. Sprawdzenie produktu")
         print("2. Sprawdzenie miejsca")
         print("3. Wypisanie zamówień")
@@ -141,7 +139,7 @@ def pracownik(login):
         opcja = int(input("Co chcesz zrobić: "))
         if(opcja == 1):
             wszystkie_produkty()
-            pytanie = input("Zakończ")
+            pytanie = input("Naciśnij ENTER aby zakończyć")
             if pytanie:
                 return pracownik(login)
             return pracownik(login)
@@ -159,7 +157,7 @@ def pracownik(login):
             for row in cur.fetchall():
                 print(row[0])
             connection.close()
-            ppytanie = input("Naciśnij ENTER aby zakończyć")
+            pytanie = input("Naciśnij ENTER aby zakończyć")
             if pytanie:
                 return pracownik(login)
             return pracownik(login)
@@ -175,11 +173,12 @@ def pracownik(login):
             print("BŁĘDNY WYBÓR")
             return pracownik(login)
     elif (stanowisko == "Kasjer"):
-        print("Witamy Kasjera")
+        print("\nWitamy Kasjera")
         print("Dostępne opcje:")
         print("1. Wypisanie produktów: ")
         print("2. Tworzenie faktury: ")
-        print("3. Wyjscie")
+        print("3. Wypisanie faktur")
+        print("4. Wyjscie")
         opcja = int(input("Co chce Pan zrobić? "))
         if (opcja == 1):
             wypisanie_produktow()
@@ -192,6 +191,9 @@ def pracownik(login):
             faktura(klogin)
             return pracownik(login)
         elif opcja == 3:
+            wypisanie_faktur_kasjer()
+            return pracownik(login)
+        elif opcja == 4:
             exit()
         else:
             print("BŁĘDNY WYBÓR")
