@@ -360,7 +360,7 @@ def wypisanie_faktur(login):
     )
 
     cur = connection.cursor()
-    sql = "SELECT id_faktura, wartosc FROM faktura WHERE id_klient = (SELECT id_klient FROM zamowienie WHERE klogin like %s LIMIT 1);"
+    sql = "SELECT id_faktura, wartosc FROM faktura WHERE id_klient = (SELECT id_klient FROM klient WHERE k_login like %s LIMIT 1);"
     cur.execute(sql, login)
     for row in cur.fetchall():
         print("Faktura numer: ", row[0], "| Wartość", row[1])
@@ -387,3 +387,17 @@ def szczegoly(numer):
             print("Wartość całkowita: ", row[0])
         connection.close()
 
+#18 Wypisanie wszystkich faktur
+def wypisanie_faktur_kasjer():
+    connection = pymysql.Connect(
+        host='localhost',
+        user="root",
+        password="",
+        db="hurtownia2",
+    )
+    cur = connection.cursor()
+    sql = ""
+    cur.execute(sql)
+    for row in cur.fetchall():
+        print("Faktura numer: ", row[0], "| Wartość", row[1], "| Login klienta", row[2])
+    connection.close()
