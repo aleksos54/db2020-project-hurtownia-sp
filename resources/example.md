@@ -11,7 +11,6 @@ Przedmiotem projektu była Hurtownia. Postanowiliśmy stworzyć hurtownię wielo
 
 Baza danych składa się z ośmiu encji takich jak:
 * Pracownik
-
 * Klient
 * Cena
 * Produkt
@@ -19,6 +18,7 @@ Baza danych składa się z ośmiu encji takich jak:
 * Faktura
 * Zamowienie
 * Sekcja
+
 Encje połączone są ze sobą przy pomocy kluczy obcych.
 
 ![diagram-erd](projekt.svg)
@@ -171,7 +171,8 @@ WHERE imie LIKE Jacek AND nazwisko LIKE Placek) WHERE id_zamowienie = 1;
 
 16. Wyświetlenie zamówień
 ```sql
-SELECT zamowienie.id_zamowienie, produkt.nazwa_produktu, zamowienie.data_zamowienia, pracownik.imie, pracownik.nazwisko, zamowienie.ilosc FROM zamowienie INNER JOIN produkt ON zamowienie.id_produkt = produkt.id_produkt INNER JOIN pracownik ON zamowienie.id_pracownik = pracownik.id_pracownik;
+SELECT zamowienie.id_zamowienie, produkt.nazwa_produktu, zamowienie.data_zamowienia, pracownik.imie, pracownik.nazwisko, zamowienie.ilosc FROM zamowienie 
+INNER JOIN produkt ON zamowienie.id_produkt = produkt.id_produkt INNER JOIN pracownik ON zamowienie.id_pracownik = pracownik.id_pracownik;
 ```
 
 17. Wypisanie faktury - klient chce obejrzeć wszystkie swoje faktury, wyświetlają mu się one w wersji skróconej. Jeśli chce zobaczyć szczegóły jednej z nich musi wprowadzić jej numer id.
@@ -189,6 +190,7 @@ SELECT wartosc FROM faktura WHERE id_faktura = 4;
 
 ## Aplikacja
 Aplikacja została napisana w języku Python. Połączenie z bazą danych zrealizowano poprzez:
+
 ![screen](screen.PNG)
 
 ## Dodatkowe uwagi
