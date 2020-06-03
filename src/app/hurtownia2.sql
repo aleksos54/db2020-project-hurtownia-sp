@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Czas generowania: 20 Maj 2020, 12:24
+-- Czas generowania: 03 Cze 2020, 16:39
 -- Wersja serwera: 10.4.11-MariaDB
 -- Wersja PHP: 7.2.28
 
@@ -100,9 +100,20 @@ CREATE TABLE `faktura` (
 --
 
 INSERT INTO `faktura` (`id_faktura`, `wartosc`, `id_klient`) VALUES
-(1, 4, 1),
-(2, 5, 2),
-(3, 62, 1);
+(1, 95, 1),
+(2, 95, 2),
+(3, 95, 1),
+(4, 95, 1),
+(5, 95, 1),
+(6, 95, 1),
+(7, 95, 1),
+(8, 95, 1),
+(9, 95, 1),
+(10, 95, 1),
+(11, 320, 1),
+(14, 17.5, 3),
+(15, 100, 4),
+(17, 250, 1);
 
 -- --------------------------------------------------------
 
@@ -133,7 +144,10 @@ INSERT INTO `klient` (`id_klient`, `imie`, `nazwisko`, `NIP`, `k_login`, `k_hasl
 (7, 'Wacław', 'Gaska', '0980980980', 'kwaclaw', 'kwaclaw'),
 (8, 'Arkadiusz', 'Nowak', '9876543210', 'karkadiusz', 'karkadiusz'),
 (9, 'Izabela', 'Lecka', '8989898998', 'kizabela', 'kizabela'),
-(10, 'Pawel', 'Reka', '1234561234', 'kpawel', 'kpawel');
+(10, 'Pawel', 'Reka', '1234561234', 'kpawel', 'kpawel'),
+(13, 'Seba', 'Seba', '5469872368', 'kseba', 'kseba'),
+(14, 'Marek', 'Mostowiak', '1597538462', 'kmarek', 'kmarek'),
+(15, 'Aleks', 'Aleks', '4561237894', 'kaleks', 'kaleks');
 
 -- --------------------------------------------------------
 
@@ -156,7 +170,7 @@ CREATE TABLE `pracownik` (
 --
 
 INSERT INTO `pracownik` (`id_pracownik`, `imie`, `nazwisko`, `pensja`, `id_stanowisko`, `p_login`, `p_haslo`) VALUES
-(1, 'Karol', 'Mickiewicz', 10000, 1, 'pkarol', 'pkarol'),
+(1, 'Karol', 'Mickiewicz', 9000, 1, 'pkarol', 'pkarol'),
 (2, 'Lidia', 'Sklodowska', 2000, 3, 'plidia', 'plidia'),
 (3, 'Jan', 'Klocek', 2000, 3, 'pjan', 'pjan'),
 (4, 'Mikolaj', 'Kompas', 2000, 3, 'pmikolaj', 'pmikolaj'),
@@ -166,8 +180,9 @@ INSERT INTO `pracownik` (`id_pracownik`, `imie`, `nazwisko`, `pensja`, `id_stano
 (8, 'Adam', 'Bak', 2500, 2, 'padam', 'padam'),
 (9, 'Aleksandra', 'Wabicka', 2500, 2, 'paleksandra', 'paleksandra'),
 (10, 'Teofil', 'Wybicki', 2500, 2, 'pteofil', 'pteofil'),
-(11, 'Krzysztof', 'Krawczyk', 5000, 4, 'pkrzysztof', 'pkrzysztof'),
-(12, 'Irena', 'Krawczyk', 5000, 4, 'pirena', 'pirena');
+(11, 'Krzysztof', 'Krawczyk', 5500, 4, 'pkrzysztof', 'pkrzysztof'),
+(12, 'Irena', 'Krawczyk', 5000, 4, 'pirena', 'pirena'),
+(14, 'Norbert', 'Wrotek', 1750, 2, 'pnorbert', 'pnorbert');
 
 -- --------------------------------------------------------
 
@@ -188,7 +203,7 @@ CREATE TABLE `produkt` (
 --
 
 INSERT INTO `produkt` (`id_produkt`, `id_cena`, `id_sekcja`, `nazwa_produktu`, `ilosc_produktow`) VALUES
-(1, 3, 1, 'dlugopis', 2000),
+(1, 3, 1, 'dlugopis', 1150),
 (2, 8, 1, 'segregator', 100),
 (3, 1, 1, 'olowek', 4000),
 (4, 4, 1, 'gumka do mazania', 500),
@@ -198,12 +213,12 @@ INSERT INTO `produkt` (`id_produkt`, `id_cena`, `id_sekcja`, `nazwa_produktu`, `
 (8, 18, 1, 'pioro', 160),
 (9, 28, 1, 'piornik', 280),
 (10, 7, 1, 'teczka', 1500),
-(11, 28, 2, 'Zubrowka', 500),
+(11, 28, 2, 'Zubrowka', 487),
 (12, 20, 2, 'Jack Daniels', 210),
 (13, 19, 2, 'Johnnie Walker', 315),
 (14, 36, 2, 'Zaladkowa', 400),
 (15, 5, 2, 'Zubr', 2400),
-(16, 31, 2, 'Finlandia', 267),
+(16, 31, 2, 'Finlandia', 264),
 (17, 7, 2, 'Desperados', 3000),
 (18, 27, 2, 'Stock', 520),
 (19, 27, 2, 'Prosecco', 1200),
@@ -234,7 +249,6 @@ INSERT INTO `produkt` (`id_produkt`, `id_cena`, `id_sekcja`, `nazwa_produktu`, `
 (59, 7, 3, 'coca-cola', 400),
 (60, 5, 3, 'napoj energetyczny', 320),
 (61, 9, 3, 'musztarda', 1500),
-(62, 37, 3, 'wafle ryzowe', 100000),
 (63, 26, 5, 'Heetsy mietowe', 2000),
 (64, 26, 5, 'Heetsy limonkowe', 1406),
 (65, 26, 5, 'Heetsy mentolowe', 1800),
@@ -242,7 +256,7 @@ INSERT INTO `produkt` (`id_produkt`, `id_cena`, `id_sekcja`, `nazwa_produktu`, `
 (67, 27, 5, 'Malboro gold', 780),
 (68, 27, 5, 'Malboro zielone', 420),
 (69, 31, 5, 'Sobranie', 250),
-(70, 34, 6, 'Jacuzzi', 2);
+(70, 34, 6, 'Jacuzzi', 1);
 
 -- --------------------------------------------------------
 
@@ -301,16 +315,33 @@ CREATE TABLE `zamowienie` (
   `data_zamowienia` date NOT NULL,
   `id_pracownik` int(11) DEFAULT NULL,
   `ilosc` int(11) NOT NULL,
-  `id_faktura` int(11) DEFAULT NULL
+  `id_faktura` int(11) DEFAULT NULL,
+  `klogin` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Zrzut danych tabeli `zamowienie`
 --
 
-INSERT INTO `zamowienie` (`id_zamowienie`, `id_produkt`, `data_zamowienia`, `id_pracownik`, `ilosc`, `id_faktura`) VALUES
-(1, 4, '2020-05-10', 5, 1, 1),
-(2, 5, '2020-05-17', 4, 2, 3);
+INSERT INTO `zamowienie` (`id_zamowienie`, `id_produkt`, `data_zamowienia`, `id_pracownik`, `ilosc`, `id_faktura`, `klogin`) VALUES
+(1, 4, '2020-05-10', 7, 1, 1, 'kjan'),
+(2, 5, '2020-05-17', 7, 2, 3, 'kjan'),
+(3, 70, '2020-05-21', 7, 1, 4, 'kjan'),
+(4, 70, '2020-05-21', 7, 1, 5, 'kjan'),
+(5, 70, '2020-06-22', 7, 2, 6, 'kjan'),
+(6, 1, '2020-05-25', 7, 500, 7, 'kjan'),
+(10, 70, '2020-05-26', 7, 1, 8, 'kjan'),
+(11, 1, '2020-05-26', 7, 500, 8, 'kjan'),
+(12, 1, '2020-05-30', 11, 10, 9, 'kjan'),
+(13, 11, '2020-05-30', 11, 4, 9, 'kjan'),
+(15, 1, '2020-05-30', 11, 10, 10, 'kjan'),
+(16, 11, '2020-05-30', 11, 4, 10, 'kjan'),
+(17, 1, '2020-05-30', 11, 100, 11, 'kjan'),
+(18, 11, '2020-05-30', 11, 4, 11, 'kjan'),
+(21, 11, '2020-05-31', 11, 1, 14, 'kmichal'),
+(23, 16, '2020-05-31', 11, 2, 15, 'kkamil'),
+(24, 1, '2020-05-31', 11, 10, 15, 'kkamil'),
+(25, 1, '2020-05-31', 11, 100, 17, 'kjan');
 
 --
 -- Indeksy dla zrzutów tabel
@@ -385,19 +416,19 @@ ALTER TABLE `cena`
 -- AUTO_INCREMENT dla tabeli `faktura`
 --
 ALTER TABLE `faktura`
-  MODIFY `id_faktura` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_faktura` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT dla tabeli `klient`
 --
 ALTER TABLE `klient`
-  MODIFY `id_klient` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id_klient` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT dla tabeli `pracownik`
 --
 ALTER TABLE `pracownik`
-  MODIFY `id_pracownik` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id_pracownik` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT dla tabeli `produkt`
@@ -421,7 +452,7 @@ ALTER TABLE `stanowisko`
 -- AUTO_INCREMENT dla tabeli `zamowienie`
 --
 ALTER TABLE `zamowienie`
-  MODIFY `id_zamowienie` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_zamowienie` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- Ograniczenia dla zrzutów tabel
