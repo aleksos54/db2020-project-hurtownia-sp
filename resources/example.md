@@ -197,5 +197,8 @@ Aplikacja została napisana w języku Python. Połączenie z bazą danych zreali
 
 ![screen](screen.PNG)
 
+W aplikacji został stworzony zarówno interfejs pracownika hurtownni, jak i klienta. Pracownik w zależności od stanowiska posiada różną ilość czynności którą może wykonać w hurtowni np: zaktualizowanie ceny, zaktualizowanie ilości produktu (w zamyśle chodzi o dostawę produktu do magazynu), przydzielenie zadań itp.
+Klient ma możliwość zamówienia produktu, zobaczenia swoich faktur itp.
+
 ## Dodatkowe uwagi
-W tej sekcji możecie zawrzeć informacje, których nie jesteście w stanie przypisać do pozostałych. Mogą to być również jakieś komentarze, wolne uwagi, itp.
+Ponieważ ceny dodawane są w osobnej encji, przy dodawaniu produktu należy upewnić się, że dana cena istnieje w bazie.
