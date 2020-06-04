@@ -223,6 +223,14 @@ def rejestracja(imie, nazwisko, NIP, login, haslo):
     )
 
     cur = connection.cursor()
+    pomoc = "SELECT k_login FROM klient;"
+    cur.execute(pomoc)
+    for row in cur.fetchall():
+       if login == row[0]:
+            print("Podany login jest już zajęty!")
+            login1 = input("Podaj nowy login: ")
+            return rejestracja(imie, nazwisko, NIP, login1, haslo)
+
 
     sql = "INSERT INTO klient (id_klient, imie, nazwisko, NIP, k_login, k_haslo) VALUES (NULL, %s, %s, %s, %s, %s);"
 
@@ -365,6 +373,8 @@ def wypisanie_faktur(login):
     for row in cur.fetchall():
         print("Faktura numer: ", row[0], "| Wartość", row[1])
     connection.close()
+
+
 
 def szczegoly(numer):
         connection = pymysql.Connect(
