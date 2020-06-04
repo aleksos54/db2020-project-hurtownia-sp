@@ -63,7 +63,6 @@ ALTER TABLE faktura ADD FOREIGN KEY (id_klient) REFERENCES klient (id_klient);
 ```
 
 ## Implementacja zapytań SQL
-Tutaj należy wylistować wszystkie funkcjonalności, wraz z odpowiednimi zapytaniami SQL. W tej sekcji należy zawrzeć wyłącznie zapytania z grupy DML oraz DQL.
 1. Wypisanie wszystkich produktów i posortowanie ich względem ceny malejąco
  ```sql
  SELECT produkt.nazwa_produktu, cena.cena FROM produkt 
