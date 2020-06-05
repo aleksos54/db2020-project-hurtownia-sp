@@ -24,6 +24,7 @@ Encje połączone są ze sobą przy pomocy kluczy obcych.
 ![diagram-erd](projekt.svg)
 
 Przykładowe zapytania z grupy DDL:
+
 Utworzenie tabeli cena
 ```sql
 CREATE TABLE cena(
@@ -77,7 +78,7 @@ INSERT INTO pracownik (id_pracownik, imie, nazwisko, pensja, id_stanowisko)
 VALUES (NULL, "przyklad_imie", "przyklad_nazwisko", 9999, (SELECT id_stanowisko FROM stanowisko where id_stanowisko=2));
 ```
 
-3. Wystawienie faktury
+3. Wystawienie faktury - najpierw dodajemy fakturę z pustą wartością faktury, następnie przypisujemy id faktury do zamówień, na końcu aktualizujemy wartość faktury. Wartość obliczana jest w pętli w czasie działania aplikacji.
 ```sql
 INSERT INTO faktura (id_faktura, wartosc, id_klient) 
 VALUES (NULL, NULL, (SELECT id_klient FROM klient WHERE k_login LIKE "kjan"));
@@ -88,25 +89,25 @@ FROM faktura) WHERE id_faktura IS NULL AND klogin LIKE "kjan";
 UPDATE faktura SET wartosc = 95 WHERE id_faktura = (SELECT MAX(id_faktura) FROM faktura);
 ```
 
-4. Zaktualizowanie ceny, przykładowo:
+4. Zaktualizowanie ceny, przykładowo zwiększamy cenę Jacuzzio o 1000:
 ```sql
-UPDATE cena 
-SET cena.cena = cena.cena*2 
-WHERE id_cena = (SELECT id_cena FROM produkt WHERE nazwa_produktu LIKE "Jacuzzi");
+UPDATE cena SET cena.cena = cena.cena + 1000 
+WHERE id_cena = (SELECT id_cena FROM produkt 
+WHERE nazwa_produktu LIKE Jacuzzi);
 ```
 
-5. Wycofanie produktu ze sprzedaży, przykładowo:
+5. Wycofanie produktu ze sprzedaży, przykładowo wycofujemy Jacuzzi (usunięcie Jacuzzi z bazy danych):
 ```sql
 DELETE FROM produkt WHERE nazwa_produktu LIKE "Jacuzzi";
 ```
 
-6. Dodanie produktu do sprzedaży, przykładowo:
+6. Dodanie produktu do sprzedaży, przykładowo dodajemy do sprzedaży Jacuzzi warte 7000, sztuk 2. Jacuzzi ma znajdować się w sekcji ogrodniczej:
 ```sql
 INSERT INTO produkt (id_produkt,id_cena, id_sekcja , nazwa_produktu, ilosc_produktow) 
 VALUES (0, (SELECT id_cena FROM cena WHERE cena = 7000), (SELECT id_sekcja FROM sekcja WHERE sekcja LIKE "Ogrodnicza"), "Jacuzzi", 2);
 ```
 
-7. Zaktualizowanie pensji pracownika
+7. Zaktualizowanie pensji pracownika - w zaprezentowanym przykładzie wzrost pensji o 100 dla użytkownika Krzysztof Krawczyk
 ```sql
 UPDATE pracownik 
 SET pensja = pensja + 100 
@@ -120,13 +121,13 @@ FROM produkt
 INNER JOIN sekcja ON produkt.id_sekcja = sekcja.id_sekcja GROUP BY sekcja;
 ```
 
-9. Dodanie nowego klienta
+9. Rejestracja klienta
 ```sql
 INSERT INTO klient (id_klient, imie, nazwisko, NIP) 
 VALUES (NULL, "przyklad", "przyklad", "9999999999");
 ```
 
-10. Wypisanie wszystkich pracowników sortujac ich według stanowiska
+10. Wypisanie wszystkich pracowników sortujac ich według stanowiska (sortowanie następuje alfabetycznie)
 ```sql
 SELECT stanowisko.stanowisko, pracownik.imie, pracownik.nazwisko FROM pracownik 
 INNER JOIN stanowisko ON pracownik.id_stanowisko = stanowisko.id_stanowisko 
@@ -145,14 +146,14 @@ WHERE nazwa_produktu LIKE "Jacuzzi";
 SELECT nazwa_produktu, ilosc_produktow FROM produkt;
 ```
 
-13. Aktualizacja ilości produktów
+13. Aktualizacja ilości produktów - w przykładzie zwiększenie ceny Jacuzzi o 2000
 ```sql
 UPDATE produkt 
-SET produkt.ilosc_produktow = produkt.ilosc_produktow + %s 
+SET produkt.ilosc_produktow = produkt.ilosc_produktow + 2000 
 WHERE id_produkt = (SELECT id_produkt FROM produkt WHERE nazwa_produktu LIKE Jacuzzi);
 ```
 
-14. Złożenie zamówienia
+14. Złożenie zamówienia - początkowo tworzymy zamówienie, następnie zmniejszamy ilość produktów o kupioną ilość. W przykładzie Klient zamówił 1 Jacuzzi, dlatego ich dostępna ilość została zmniejszona o 1.
 ```sql
 INSERT INTO zamowienie (id_zamowienie,id_produkt, data_zamowienia, id_pracownik, ilosc, id_faktura) 
 VALUES (NULL, (SELECT id_produkt FROM produkt WHERE nazwa_produktu LIKE Jacuzzi), "2020-05-27", 11, 1, NULL);
@@ -162,7 +163,7 @@ SET produkt.ilosc_produktow = produkt.ilosc_produktow - 1
 WHERE id_produkt = (SELECT id_produkt FROM produkt WHERE nazwa_produktu LIKE Jacuzzi);
 ```
 
-15. Przydzielenie zadań
+15. Przydzielenie zadań - polega na przydzieleniu konkretnego zamówienia pracownikowi do wykonania. 
 ```sql
 UPDATE zamowienie 
 SET id_pracownik = (SELECT id_pracownik FROM pracownik 
