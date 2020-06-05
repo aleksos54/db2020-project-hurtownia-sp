@@ -202,5 +202,72 @@ Klient ma możliwość zamówienia produktu, zobaczenia swoich faktur itp.
 
 Interakcja z użytkownikiem realizowana jest poprzez wprowadzanie różnych cyfr, w zależności od tego co chcemy dokonać. Przy niektórych funkcjonalnościach należy wpisać żądaną przez aplikację rzecz, np. przy składaniu zamówienia wpisujemy nazwę produktu.
 
+Przykładowa implementacja funkcjonalności:
+
+1. Rejestracja klienta - funkcja przyjmuje argumenty podane przez użytkownika z klawiatury. Następnie następuje sprawdzenie czy podany login nie jest już zajęty. Jeśli byłby zajęty to użytkownik proszony jest o ponowne wprowadzenie loginu. Jeśli wszystko zostało wykonane prawidłowo klient dodawany jest do bazy.
+```py
+#9 REJERSTRACJA KLIENTA
+def rejestracja(imie, nazwisko, NIP, login, haslo):
+    connection = pymysql.Connect(
+        host='localhost',
+        user="root",
+        password="",
+        db="hurtownia2",
+    )
+
+    cur = connection.cursor()
+    pomoc = "SELECT k_login FROM klient;"
+    cur.execute(pomoc)
+    for row in cur.fetchall():
+       if login == row[0]:
+            print("Podany login jest już zajęty!")
+            login1 = input("Podaj nowy login: ")
+            return rejestracja(imie, nazwisko, NIP, login1, haslo)
+
+
+    sql = "INSERT INTO klient (id_klient, imie, nazwisko, NIP, k_login, k_haslo) VALUES (NULL, %s, %s, %s, %s, %s);"
+
+    cur.execute(sql, (imie, nazwisko, NIP, login, haslo))
+    connection.commit()
+    connection.close()
+```
+2. Wyszukanie produktu - funkcja przyjmuje jako argument nazwę produktu szukaną przez klienta. Wypisany zostaje produkt wraz z ceną.
+```py
+def nazwa_produkt(nazwa):
+    connection = pymysql.connect(
+        host='localhost',
+        user="root",
+        password="",
+        db="hurtownia2",
+    )
+    cur = connection.cursor()
+
+    sql = "SELECT produkt.nazwa_produktu, cena.cena FROM produkt INNER JOIN cena ON produkt.id_cena = cena.id_cena WHERE nazwa_produktu LIKE %s;"
+
+    cur.execute(sql, nazwa)
+    for row in cur.fetchall():
+        print(row[0], "|", row[1])
+
+    connection.close()
+```
+3. Wycofanie produktu ze sprzedaży - funkcja przyjmuje jako argument nazwę produktu podaną przez użytkownika. Produkt zostaje usunięty z bazy danych.
+```py
+def usuniecie_produktu(nazwa):
+    connection = pymysql.Connect(
+        host='localhost',
+        user="root",
+        password="",
+        db="hurtownia2",
+    )
+
+    cur = connection.cursor()
+
+    sql = "DELETE FROM produkt WHERE nazwa_produktu LIKE %s;"
+
+    cur.execute(sql, nazwa)
+    connection.commit()
+    connection.close()
+```
+
 ## Dodatkowe uwagi
 Ponieważ ceny dodawane są w osobnej encji, przy dodawaniu produktu należy upewnić się, że dana cena istnieje w bazie.
